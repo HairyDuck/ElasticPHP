@@ -17,6 +17,7 @@ How to use
 
 ```php
 <?php
+require('miniES.php');
  $ES = new ES();
     $ES->setDomain('MYDOMAIN');
     $ES->setIndex('MYINDEX');
