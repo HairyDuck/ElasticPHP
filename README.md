@@ -1,4 +1,4 @@
-![](https://github.styleci.io/repos/7548986/shield?style=plastic&branch=5.1)
+![](https://github.styleci.io/repos/7548986/shield)
 ![](https://img.shields.io/github/license/luke908/php-mini-aws-elasticsearch.svg)
 ![](https://img.shields.io/github/stars/luke908/php-mini-aws-elasticsearch.svg)
 ![](https://img.shields.io/github/license/luke908/php-mini-aws-elasticsearch.svg)
