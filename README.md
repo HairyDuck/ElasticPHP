@@ -1,5 +1,5 @@
 ![](https://github.styleci.io/repos/7548986/shield?style=flat)
-![](https://img.shields.io/github/license/luke908/php-mini-aws-elasticsearch.svg?style=flat)
+![](https://img.shields.io/github/forks/luke908/php-mini-aws-elasticsearch.svg?style=flat)
 ![](https://img.shields.io/github/stars/luke908/php-mini-aws-elasticsearch.svg?style=flat)
 ![](https://img.shields.io/github/license/luke908/php-mini-aws-elasticsearch.svg?style=flat)
 
