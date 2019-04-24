@@ -36,8 +36,7 @@ class ES
             self::$utc_tz = new \DateTimeZone('UTC');
         }
 
-        
-        $datestamp = new \DateTime('now', self::$utc_tz);
+                $datestamp = new \DateTime('now', self::$utc_tz);
         $longdate = $datestamp->format('Ymd\\THis\\Z');
         $shortdate = $datestamp->format('Ymd');
 
@@ -72,8 +71,8 @@ class ES
         $url = 'https://'.$this->domain.'.eu-west-1.es.amazonaws.com/'.$this->index.'/'.$action;
 
         $curl_headers = [];
-        foreach ($params as $p => $k) {
-            $curl_headers[] = $p.': '.$k;
+        foreach ($params as $par => $key) {
+            $curl_headers[] = $par.': '.$key;
         }
 
         $curl = curl_init();
@@ -109,14 +108,14 @@ class ES
           'host' => $this->domain.'.eu-west-1.es.amazonaws.com',
         ];
 
-        foreach ($params as $k => $v) {
-            $can_headers[strtolower($k)] = trim($v);
+        foreach ($params as $key => $val) {
+            $can_headers[strtolower($key)] = trim($val);
         }
 
         uksort($can_headers, 'strcmp');
 
-        foreach ($can_headers as $k => $v) {
-            $canonical_request[] = $k.':'.$v;
+        foreach ($can_headers as $key => $val) {
+            $canonical_request[] = $key.':'.$val;
         }
 
         $canonical_request[] = '';
