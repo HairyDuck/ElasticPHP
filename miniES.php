@@ -69,28 +69,28 @@ class ES
         $params['Authorization'] = 'AWS4-HMAC-SHA256 Credential='.self::ACCESS_KEY."/$shortdate/eu-west-1/es/aws4_request, ".
         "SignedHeaders=host;x-amz-date, Signature=$signature";
 
-       
         $url = 'https://'.$this->domain.'.eu-west-1.es.amazonaws.com/'.$this->index.'/'.$action;
 
         $curl_headers = [];
-        foreach ($params as $p => $k)$curl_headers[] = $p.': '.$k;
-
+        foreach ($params as $p => $k) {
+            $curl_headers[] = $p.': '.$k;
+        }
 
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => $url,
+        curl_setopt_array($curl, [
+          CURLOPT_URL            => $url,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_CONNECTTIMEOUT => 2,
-          CURLOPT_TCP_NODELAY => true,
+          CURLOPT_TCP_NODELAY    => true,
           CURLOPT_SSL_VERIFYHOST => false,
           CURLOPT_SSL_VERIFYPEER => false,
-          CURLOPT_TIMEOUT => 2,
-          CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
-          CURLOPT_POST => count($payload),
-          CURLOPT_POSTFIELDS => json_encode($payload),
-          CURLOPT_HTTPHEADER => $curl_headers,
-        ));
+          CURLOPT_TIMEOUT        => 2,
+          CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
+          CURLOPT_POST           => count($payload),
+          CURLOPT_POSTFIELDS     => json_encode($payload),
+          CURLOPT_HTTPHEADER     => $curl_headers,
+        ]);
 
         $result = json_decode(curl_exec($curl), true);
         curl_close($curl);
