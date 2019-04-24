@@ -9,9 +9,9 @@ What is miniES
 A simpler alternative to AWS SDK miniES is a PHP interface to AWS API.
 It is easy to learn, use and modify, unlike other large and complex libraries.
 
- * Small and fast
- * Doesn't require PEAR or COMPOSER
- * Completely stand-alone (doesn't require AWS SDK)
+*  Small and fast
+*  Doesn't require PEAR or COMPOSER
+*  Completely stand-alone (doesn't require AWS SDK)
 
 How to use
 ----------
@@ -71,15 +71,15 @@ print_r($Response);
 Requirements
 ------------
 
- *  HP >= 5.2.0
- * extensions: cURL, json
+*  PHP >= 5.2.0
+*  extensions: cURL, json
 
 Developer Documentation
 -----------------------
 
 ### Amazon ES
 
-* [Operations in Amazon ES](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html)
+*  [Operations in Amazon ES](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html)
 
 License
 -------
