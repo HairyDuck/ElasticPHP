@@ -8,6 +8,8 @@
 What is miniES
 ====================
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4dbcce4789fb46e785726e1fe8645742)](https://app.codacy.com/app/luke908/php-mini-aws-elasticsearch?utm_source=github.com&utm_medium=referral&utm_content=luke908/php-mini-aws-elasticsearch&utm_campaign=Badge_Grade_Settings)
+
 A simpler alternative to AWS SDK miniES is a PHP interface to AWS API.
 It is easy to learn, use and modify, unlike other large and complex libraries.
 
