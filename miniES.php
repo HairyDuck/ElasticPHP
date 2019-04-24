@@ -36,7 +36,7 @@ class ES
             self::$utc_tz = new \DateTimeZone('UTC');
         }
 
-                $datestamp = new \DateTime('now', self::$utc_tz);
+        $datestamp = new \DateTime('now', self::$utc_tz);
         $longdate = $datestamp->format('Ymd\\THis\\Z');
         $shortdate = $datestamp->format('Ymd');
 
