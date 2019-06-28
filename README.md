@@ -2,6 +2,8 @@
 ![](https://img.shields.io/badge/php-%3E5.2.0-blue.svg?style=flat)
 [![CodeFactor](https://www.codefactor.io/repository/github/luke908/php-mini-aws-elasticsearch/badge)](https://www.codefactor.io/repository/github/luke908/php-mini-aws-elasticsearch)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4dbcce4789fb46e785726e1fe8645742)](https://app.codacy.com/app/luke908/php-mini-aws-elasticsearch?utm_source=github.com&utm_medium=referral&utm_content=luke908/php-mini-aws-elasticsearch&utm_campaign=Badge_Grade_Settings)
+[![TheLineCount Badge](https://thelinecount.com/badges/?r=luke908/php-mini-aws-elasticsearch)](https://thelinecount.com)
+
 
 What is miniES
 ====================
