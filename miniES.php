@@ -1,6 +1,5 @@
 <?php
 
-
 class ES
 {
     public static $utc_tz;
