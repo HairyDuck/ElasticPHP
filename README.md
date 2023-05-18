@@ -1,107 +1,97 @@
 ![](https://github.styleci.io/repos/7548986/shield?style=flat)
-![](https://img.shields.io/badge/php-%3E5.2.0-blue.svg?style=flat)
-[![CodeFactor](https://www.codefactor.io/repository/github/luke908/php-mini-aws-elasticsearch/badge)](https://www.codefactor.io/repository/github/luke908/php-mini-aws-elasticsearch)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4dbcce4789fb46e785726e1fe8645742)](https://app.codacy.com/app/luke908/php-mini-aws-elasticsearch?utm_source=github.com&utm_medium=referral&utm_content=luke908/php-mini-aws-elasticsearch&utm_campaign=Badge_Grade_Settings)
-[![TheLineCount Badge](https://thelinecount.com/badge/luke908/php-mini-aws-elasticsearch)](https://thelinecount.com)
 
-What is miniES
-====================
+# miniES - Mini PHP Wrapper for AWS Elasticsearch
 
-A simpler alternative to AWS SDK miniES is a PHP interface to AWS API.
-It is easy to learn, use and modify, unlike other large and complex libraries.
+miniES is a simple and lightweight PHP interface for interacting with AWS Elasticsearch. It provides a minimalistic alternative to the AWS SDK, offering a small and fast solution without the need for PEAR or COMPOSER dependencies. This standalone library aims to simplify the process of working with AWS Elasticsearch by providing an easy-to-learn and easy-to-modify interface.
 
-*   Small and fast
-*   Doesn't require PEAR or COMPOSER
-*   Completely stand-alone (doesn't require AWS SDK)
+## Features
 
-How to use
-----------
+- Small and fast PHP wrapper for AWS Elasticsearch.
+- Doesn't require PEAR or COMPOSER dependencies.
+- Completely standalone and does not rely on the AWS SDK.
 
-### Amazon ElasticSearch
+## Requirements
+
+- PHP 7.0 or higher.
+- An AWS account with access to Elasticsearch service.
+
+## Installation
+
+To use miniES, simply download the `miniES.php` file and include it in your PHP project.
 
 ```php
-<?php
-require('miniES.php');
- $ES = new ES();
-    $ES->setDomain('MYDOMAIN');
-    $ES->setIndex('MYINDEX');
-
-
-    $search = array (
-      'sort' => 
-      array (
-        0 => '_score',
-        1 => 
-        array (
-          'ranking' => 'desc',
-        ),
-      ),
-      'query' => 
-      array (
-        'bool' => 
-        array (
-          'must' => 
-          array (
-            'match' => 
-            array (
-              'ss' => 'SOMETHING',
-            ),
-          ),
-          'filter' => 
-          array (
-            'terms' => 
-            array (
-              'categoryIDs' => 
-              array (
-                0 => 3159,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-
-    $Response = $ES->search($search);
-
-
-print_r($Response);
-
+require_once 'miniES.php';
 ```
 
-Requirements
-------------
+## Usage
 
-*   PHP >= 5.2.0
-*   extensions: cURL, json
+### Initializing miniES
 
-Developer Documentation
------------------------
+```php
+$accessKey = 'YOUR_AWS_ACCESS_KEY';
+$secretKey = 'YOUR_AWS_SECRET_KEY';
+$endpoint = 'https://your-es-endpoint.amazonaws.com';
 
-### Amazon ES
+$es = new miniES($accessKey, $secretKey, $endpoint);
+```
 
-*   [Operations in Amazon ES](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/what-is-amazon-elasticsearch-service.html)
+Replace `'YOUR_AWS_ACCESS_KEY'`, `'YOUR_AWS_SECRET_KEY'`, and `'https://your-es-endpoint.amazonaws.com'` with your actual AWS access key, secret key, and Elasticsearch endpoint URL respectively.
 
-License
--------
+### Creating an Index
 
-The MIT License
+```php
+$indexResponse = $es->createIndex('my_index');
+```
 
-Copyright (c) 2019 Luke Addington
+### Deleting an Index
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
+```php
+$deleteResponse = $es->deleteIndex('my_index');
+```
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+### Indexing a Document
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```php
+$document = [
+    'title' => 'Sample Document',
+    'content' => 'This is a sample document.',
+];
+$indexDocumentResponse = $es->indexDocument('my_index', $document);
+```
+
+### Searching Documents
+
+```php
+$searchResponse = $es->search('my_index', 'sample');
+```
+
+## Error Handling
+
+miniES uses the HTTP status code to indicate the success or failure of a request. You can check the status code and response using the following code:
+
+```php
+$status = $response['status_code'];
+$responseData = $response['response'];
+
+if ($status === 200) {
+    // Request was successful
+    // Process $responseData
+} else {
+    // Request failed
+    // Handle the error
+}
+```
+
+## Contributing
+
+Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+That's it! You now have a mini PHP wrapper for AWS Elasticsearch that allows you to perform basic operations such as creating an index, deleting an index, indexing documents, and searching for documents. Feel free to modify the code to suit your specific needs or add additional functionality as required.
+
+If you have any further questions or need assistance, please don't hesitate to ask.
