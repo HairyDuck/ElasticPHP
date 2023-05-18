@@ -1,128 +1,105 @@
 <?php
 
-class ES
+class miniES
 {
-    public static $utc_tz;
-    const   ACCESS_KEY = 'XXXXXXXXXXXXXX';
-    const   SECRET_KEY = 'XXXXXXXXXXXXXX';
-    public $index;
-    public $domain;
+    private $awsAccessKey;
+    private $awsSecretKey;
+    private $esEndpoint;
 
-    public function setDomain($domain)
+    public function __construct($awsAccessKey, $awsSecretKey, $esEndpoint)
     {
-        $this->domain = $domain;
-
-        return $this;
+        $this->awsAccessKey = $awsAccessKey;
+        $this->awsSecretKey = $awsSecretKey;
+        $this->esEndpoint = $esEndpoint;
     }
 
-    public function setIndex($index)
+    private function sendRequest($method, $path, $params = [], $data = [])
     {
-        $this->index = $index;
+        $url = $this->esEndpoint . $path;
 
-        return $this;
-    }
-
-    public function search($payload)
-    {
-        $ser = $this->execute('_search', $payload);
-
-        return $ser;
-    }
-
-    private function execute($action, $payload)
-    {
-        if (!self::$utc_tz) {
-            self::$utc_tz = new \DateTimeZone('UTC');
-        }
-
-        $datestamp = new \DateTime('now', self::$utc_tz);
-        $longdate = $datestamp->format('Ymd\\THis\\Z');
-        $shortdate = $datestamp->format('Ymd');
-
-        $ksecret = 'AWS4'.self::SECRET_KEY;
-        $kdate = hash_hmac('sha256', $shortdate, $ksecret, true);
-        $kregion = hash_hmac('sha256', 'eu-west-1', $kdate, true);
-        $kservice = hash_hmac('sha256', 'es', $kregion, true);
-        $ksigning = hash_hmac('sha256', 'aws4_request', $kservice, true);
-
-        $params = [
-            'Expect'           => null,
-            'Host'             => $this->domain.'.eu-west-1.es.amazonaws.com',
-            'Accept'           => 'application/json',
-            'Content-Type'     => 'application/json',
-            'X-Amz-Date'       => $longdate,
-        ];
-
-        $params2S = [
-            'host'           => $this->domain.'.eu-west-1.es.amazonaws.com',
-            'X-Amz-Date'     => $longdate,
-        ];
-
-        $canonical_request = $this->createCanonicalRequest($params2S, $payload, '/'.$this->index.'/'.$action);
-
-        $signed_request = hash('sha256', $canonical_request);
-        $sign_string = "AWS4-HMAC-SHA256\n{$longdate}\n$shortdate/eu-west-1/es/aws4_request\n".$signed_request;
-        $signature = hash_hmac('sha256', $sign_string, $ksigning);
-
-        $params['Authorization'] = 'AWS4-HMAC-SHA256 Credential='.self::ACCESS_KEY."/$shortdate/eu-west-1/es/aws4_request, ".
-        "SignedHeaders=host;x-amz-date, Signature=$signature";
-
-        $url = 'https://'.$this->domain.'.eu-west-1.es.amazonaws.com/'.$this->index.'/'.$action;
-
-        $curl_headers = [];
-        foreach ($params as $par => $key) {
-            $curl_headers[] = $par.': '.$key;
-        }
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-          CURLOPT_URL            => $url,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_CONNECTTIMEOUT => 2,
-          CURLOPT_TCP_NODELAY    => true,
-          CURLOPT_SSL_VERIFYHOST => false,
-          CURLOPT_SSL_VERIFYPEER => false,
-          CURLOPT_TIMEOUT        => 2,
-          CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
-          CURLOPT_POST           => count($payload),
-          CURLOPT_POSTFIELDS     => json_encode($payload),
-          CURLOPT_HTTPHEADER     => $curl_headers,
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
         ]);
 
-        $result = json_decode(curl_exec($curl), true);
-        curl_close($curl);
+        if (!empty($data)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
 
-        return $result;
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->awsAccessKey . ':' . $this->awsSecretKey);
+
+        $response = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        curl_close($ch);
+
+        return [
+            'status_code' => $statusCode,
+            'response' => $response,
+        ];
     }
 
-    private function createCanonicalRequest(array $params, $payload, $uri = '/')
+    public function createIndex($indexName)
     {
-        $canonical_request = [];
-        $canonical_request[] = 'POST';
-        $canonical_request[] = $uri;
-        $canonical_request[] = '';
+        $path = "/$indexName";
+        $method = 'PUT';
 
-        $can_headers = [
-          'host' => $this->domain.'.eu-west-1.es.amazonaws.com',
-        ];
+        return $this->sendRequest($method, $path);
+    }
 
-        foreach ($params as $key => $val) {
-            $can_headers[strtolower($key)] = trim($val);
-        }
+    public function deleteIndex($indexName)
+    {
+        $path = "/$indexName";
+        $method = 'DELETE';
 
-        uksort($can_headers, 'strcmp');
+        return $this->sendRequest($method, $path);
+    }
 
-        foreach ($can_headers as $key => $val) {
-            $canonical_request[] = $key.':'.$val;
-        }
+    public function indexDocument($indexName, $document)
+    {
+        $path = "/$indexName/_doc";
+        $method = 'POST';
 
-        $canonical_request[] = '';
-        $canonical_request[] = implode(';', array_keys($can_headers));
-        $canonical_request[] = hash('sha256', json_encode($payload));
+        return $this->sendRequest($method, $path, [], $document);
+    }
 
-        $canonical_request = implode("\n", $canonical_request);
+    public function search($indexName, $query)
+    {
+        $path = "/$indexName/_search";
+        $method = 'GET';
 
-        return $canonical_request;
+        return $this->sendRequest($method, $path, ['q' => $query]);
     }
 }
+
+// Usage example:
+
+$accessKey = 'YOUR_AWS_ACCESS_KEY';
+$secretKey = 'YOUR_AWS_SECRET_KEY';
+$endpoint = 'https://your-es-endpoint.amazonaws.com';
+
+$es = new miniES($accessKey, $secretKey, $endpoint);
+
+// Create an index
+$indexResponse = $es->createIndex('my_index');
+print_r($indexResponse);
+
+// Index a document
+$document = [
+    'title' => 'Sample Document',
+    'content' => 'This is a sample document.',
+];
+$indexDocumentResponse = $es->indexDocument('my_index', $document);
+print_r($indexDocumentResponse);
+
+// Search documents
+$searchResponse = $es->search('my_index', 'sample');
+print_r($searchResponse);
+
+// Delete an index
+$deleteResponse = $es->deleteIndex('my_index');
+print_r($deleteResponse);
