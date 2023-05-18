@@ -1,4 +1,4 @@
-![](https://github.styleci.io/repos/7548986/shield?style=flat)
+[![StyleCI](https://github.styleci.io/repos/162427371/shield?branch=master)](https://github.styleci.io/repos/162427371?branch=master)
 
 # ElasticPHP - Mini PHP Wrapper for AWS Elasticsearch
 
