@@ -15,7 +15,7 @@ class miniES
 
     private function sendRequest($method, $path, $params = [], $data = [])
     {
-        $url = $this->esEndpoint . $path;
+        $url = $this->esEndpoint.$path;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -30,7 +30,7 @@ class miniES
         }
 
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->awsAccessKey . ':' . $this->awsSecretKey);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->awsAccessKey.':'.$this->awsSecretKey);
 
         $response = curl_exec($ch);
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -39,7 +39,7 @@ class miniES
 
         return [
             'status_code' => $statusCode,
-            'response' => $response,
+            'response'    => $response,
         ];
     }
 
@@ -90,7 +90,7 @@ print_r($indexResponse);
 
 // Index a document
 $document = [
-    'title' => 'Sample Document',
+    'title'   => 'Sample Document',
     'content' => 'This is a sample document.',
 ];
 $indexDocumentResponse = $es->indexDocument('my_index', $document);
