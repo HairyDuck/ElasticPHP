@@ -1,8 +1,8 @@
 ![](https://github.styleci.io/repos/7548986/shield?style=flat)
 
-# miniES - Mini PHP Wrapper for AWS Elasticsearch
+# ElasticPHP - Mini PHP Wrapper for AWS Elasticsearch
 
-miniES is a simple and lightweight PHP interface for interacting with AWS Elasticsearch. It provides a minimalistic alternative to the AWS SDK, offering a small and fast solution without the need for PEAR or COMPOSER dependencies. This standalone library aims to simplify the process of working with AWS Elasticsearch by providing an easy-to-learn and easy-to-modify interface.
+ElasticPHP is a simple and lightweight PHP interface for interacting with AWS Elasticsearch. It provides a minimalistic alternative to the AWS SDK, offering a small and fast solution without the need for PEAR or COMPOSER dependencies. This standalone library aims to simplify the process of working with AWS Elasticsearch by providing an easy-to-learn and easy-to-modify interface.
 
 ## Features
 
@@ -17,22 +17,22 @@ miniES is a simple and lightweight PHP interface for interacting with AWS Elasti
 
 ## Installation
 
-To use miniES, simply download the `miniES.php` file and include it in your PHP project.
+To use ElasticPHP, simply download the `ElasticPHP.php` file and include it in your PHP project.
 
 ```php
-require_once 'miniES.php';
+require_once 'ElasticPHP.php';
 ```
 
 ## Usage
 
-### Initializing miniES
+### Initializing ElasticPHP
 
 ```php
 $accessKey = 'YOUR_AWS_ACCESS_KEY';
 $secretKey = 'YOUR_AWS_SECRET_KEY';
 $endpoint = 'https://your-es-endpoint.amazonaws.com';
 
-$es = new miniES($accessKey, $secretKey, $endpoint);
+$es = new ElasticPHP($accessKey, $secretKey, $endpoint);
 ```
 
 Replace `'YOUR_AWS_ACCESS_KEY'`, `'YOUR_AWS_SECRET_KEY'`, and `'https://your-es-endpoint.amazonaws.com'` with your actual AWS access key, secret key, and Elasticsearch endpoint URL respectively.
@@ -67,7 +67,7 @@ $searchResponse = $es->search('my_index', 'sample');
 
 ## Error Handling
 
-miniES uses the HTTP status code to indicate the success or failure of a request. You can check the status code and response using the following code:
+ElasticPHP uses the HTTP status code to indicate the success or failure of a request. You can check the status code and response using the following code:
 
 ```php
 $status = $response['status_code'];
@@ -92,6 +92,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-That's it! You now have a mini PHP wrapper for AWS Elasticsearch that allows you to perform basic operations such as creating an index, deleting an index, indexing documents, and searching for documents. Feel free to modify the code to suit your specific needs or add additional functionality as required.
+That's it! You now have ElasticPHP, a mini PHP wrapper for AWS Elasticsearch, which allows you to perform basic operations such as creating an index, deleting an index, indexing documents, and searching for documents. Feel free to modify the code to suit your specific needs or add additional functionality as required.
 
 If you have any further questions or need assistance, please don't hesitate to ask.
