@@ -1,4 +1,5 @@
 [![StyleCI](https://github.styleci.io/repos/162427371/shield?branch=master)](https://github.styleci.io/repos/162427371?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/hairyduck/elasticphp/badge)](https://www.codefactor.io/repository/github/hairyduck/elasticphp)
 
 # ElasticPHP - Mini PHP Wrapper for AWS Elasticsearch
 
